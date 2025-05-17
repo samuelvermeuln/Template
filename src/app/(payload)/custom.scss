@@ -1,0 +1,28 @@
+@media (prefers-color-scheme: light) {
+  .darkMode {
+    display: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .lightMode {
+    display: none;
+  }
+}
+
+.authors div {
+  display: flex;
+  gap: 1rem;
+}
+
+.authorContainer {
+  align-items: center;
+}
+
+.error {
+  color: red;
+}
+
+.titleLabel label {
+  font-weight: bold;
+}
