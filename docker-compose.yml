@@ -1,0 +1,38 @@
+# docker-compose.yml
+services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: supersecreta
+    volumes:
+      - data:/data/db               # persiste o banco entre reinícios
+    logging:
+      driver: none                  # silencia logs no terminal
+
+  # Payload CMS / Node
+  payload:
+    image: node:18-alpine
+    working_dir: /home/node/app
+    volumes:
+      - .:/home/node/app            # código-fonte
+      - node_modules:/home/node/app/node_modules
+    ports:
+      - "3000:3000"                 # http://localhost:3000
+    command: >
+      sh -c "
+        corepack enable &&
+        corepack prepare pnpm@latest --activate &&
+        pnpm install &&
+        pnpm dev
+      "
+    env_file:
+      - .env                        # carrega variáveis do arquivo .env
+    depends_on:
+      - mongo
+
+volumes:
+  data:
+  node_modules:
